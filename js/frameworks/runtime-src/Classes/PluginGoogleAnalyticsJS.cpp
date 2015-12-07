@@ -2,6 +2,8 @@
 #include "cocos2d_specifics.hpp"
 #include "PluginGoogleAnalytics/PluginGoogleAnalytics.h"
 #include "SDKBoxJSHelper.h"
+#include "sdkbox/sdkbox.h"
+
 
 #if defined(MOZJS_MAJOR_VERSION)
 #if MOZJS_MAJOR_VERSION >= 33
@@ -104,43 +106,68 @@ JSClass  *jsb_sdkbox_PluginGoogleAnalytics_class;
 JSObject *jsb_sdkbox_PluginGoogleAnalytics_prototype;
 
 #if defined(MOZJS_MAJOR_VERSION)
-bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
-    if (argc == 4) {
+    if (argc == 1) {
         std::string arg0;
-        int arg1;
-        std::string arg2;
-        std::string arg3;
         ok &= jsval_to_std_string(cx, args.get(0), &arg0);
-        ok &= jsval_to_int32(cx, args.get(1), (int32_t *)&arg1);
-        ok &= jsval_to_std_string(cx, args.get(2), &arg2);
-        ok &= jsval_to_std_string(cx, args.get(3), &arg3);
-        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming : Error processing arguments");
-        sdkbox::PluginGoogleAnalytics::logTiming(arg0, arg1, arg2, arg3);
+        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker : Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::createTracker(arg0);
         args.rval().setUndefined();
         return true;
     }
-    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming : wrong number of arguments");
+    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker : wrong number of arguments");
     return false;
 }
 #elif defined(JS_VERSION)
-JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp)
 {
     jsval *argv = JS_ARGV(cx, vp);
     JSBool ok = JS_TRUE;
-    if (argc == 4) {
+    if (argc == 1) {
         std::string arg0;
-        int arg1;
-        std::string arg2;
-        std::string arg3;
         ok &= jsval_to_std_string(cx, argv[0], &arg0);
-        ok &= jsval_to_int32(cx, argv[1], (int32_t *)&arg1);
-        ok &= jsval_to_std_string(cx, argv[2], &arg2);
-        ok &= jsval_to_std_string(cx, argv[3], &arg3);
         JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
-        sdkbox::PluginGoogleAnalytics::logTiming(arg0, arg1, arg2, arg3);
+        sdkbox::PluginGoogleAnalytics::createTracker(arg0);
+        JS_SET_RVAL(cx, vp, JSVAL_VOID);
+        return JS_TRUE;
+    }
+    JS_ReportError(cx, "wrong number of arguments");
+    return JS_FALSE;
+}
+#endif
+#if defined(MOZJS_MAJOR_VERSION)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    bool ok = true;
+    if (argc == 2) {
+        int arg0;
+        std::string arg1;
+        ok &= jsval_to_int32(cx, args.get(0), (int32_t *)&arg0);
+        ok &= jsval_to_std_string(cx, args.get(1), &arg1);
+        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric : Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::setMetric(arg0, arg1);
+        args.rval().setUndefined();
+        return true;
+    }
+    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric : wrong number of arguments");
+    return false;
+}
+#elif defined(JS_VERSION)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    jsval *argv = JS_ARGV(cx, vp);
+    JSBool ok = JS_TRUE;
+    if (argc == 2) {
+        int arg0;
+        std::string arg1;
+        ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
+        ok &= jsval_to_std_string(cx, argv[1], &arg1);
+        JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::setMetric(arg0, arg1);
         JS_SET_RVAL(cx, vp, JSVAL_VOID);
         return JS_TRUE;
     }
@@ -402,6 +429,39 @@ JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logException(JSContext *
 }
 #endif
 #if defined(MOZJS_MAJOR_VERSION)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    bool ok = true;
+    if (argc == 1) {
+        std::string arg0;
+        ok &= jsval_to_std_string(cx, args.get(0), &arg0);
+        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser : Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::setUser(arg0);
+        args.rval().setUndefined();
+        return true;
+    }
+    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser : wrong number of arguments");
+    return false;
+}
+#elif defined(JS_VERSION)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    jsval *argv = JS_ARGV(cx, vp);
+    JSBool ok = JS_TRUE;
+    if (argc == 1) {
+        std::string arg0;
+        ok &= jsval_to_std_string(cx, argv[0], &arg0);
+        JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::setUser(arg0);
+        JS_SET_RVAL(cx, vp, JSVAL_VOID);
+        return JS_TRUE;
+    }
+    JS_ReportError(cx, "wrong number of arguments");
+    return JS_FALSE;
+}
+#endif
+#if defined(MOZJS_MAJOR_VERSION)
 bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -418,6 +478,43 @@ JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession(JSContext *c
 {
     if (argc == 0) {
         sdkbox::PluginGoogleAnalytics::stopSession();
+        JS_SET_RVAL(cx, vp, JSVAL_VOID);
+        return JS_TRUE;
+    }
+    JS_ReportError(cx, "wrong number of arguments");
+    return JS_FALSE;
+}
+#endif
+#if defined(MOZJS_MAJOR_VERSION)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    bool ok = true;
+    if (argc == 2) {
+        int arg0;
+        std::string arg1;
+        ok &= jsval_to_int32(cx, args.get(0), (int32_t *)&arg0);
+        ok &= jsval_to_std_string(cx, args.get(1), &arg1);
+        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension : Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::setDimension(arg0, arg1);
+        args.rval().setUndefined();
+        return true;
+    }
+    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension : wrong number of arguments");
+    return false;
+}
+#elif defined(JS_VERSION)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    jsval *argv = JS_ARGV(cx, vp);
+    JSBool ok = JS_TRUE;
+    if (argc == 2) {
+        int arg0;
+        std::string arg1;
+        ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
+        ok &= jsval_to_std_string(cx, argv[1], &arg1);
+        JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::setDimension(arg0, arg1);
         JS_SET_RVAL(cx, vp, JSVAL_VOID);
         return JS_TRUE;
     }
@@ -557,31 +654,43 @@ JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableTracker(JSContext 
 }
 #endif
 #if defined(MOZJS_MAJOR_VERSION)
-bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
-    if (argc == 1) {
+    if (argc == 4) {
         std::string arg0;
+        int arg1;
+        std::string arg2;
+        std::string arg3;
         ok &= jsval_to_std_string(cx, args.get(0), &arg0);
-        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker : Error processing arguments");
-        sdkbox::PluginGoogleAnalytics::createTracker(arg0);
+        ok &= jsval_to_int32(cx, args.get(1), (int32_t *)&arg1);
+        ok &= jsval_to_std_string(cx, args.get(2), &arg2);
+        ok &= jsval_to_std_string(cx, args.get(3), &arg3);
+        JSB_PRECONDITION2(ok, cx, false, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming : Error processing arguments");
+        sdkbox::PluginGoogleAnalytics::logTiming(arg0, arg1, arg2, arg3);
         args.rval().setUndefined();
         return true;
     }
-    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker : wrong number of arguments");
+    JS_ReportError(cx, "js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming : wrong number of arguments");
     return false;
 }
 #elif defined(JS_VERSION)
-JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp)
 {
     jsval *argv = JS_ARGV(cx, vp);
     JSBool ok = JS_TRUE;
-    if (argc == 1) {
+    if (argc == 4) {
         std::string arg0;
+        int arg1;
+        std::string arg2;
+        std::string arg3;
         ok &= jsval_to_std_string(cx, argv[0], &arg0);
+        ok &= jsval_to_int32(cx, argv[1], (int32_t *)&arg1);
+        ok &= jsval_to_std_string(cx, argv[2], &arg2);
+        ok &= jsval_to_std_string(cx, argv[3], &arg3);
         JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
-        sdkbox::PluginGoogleAnalytics::createTracker(arg0);
+        sdkbox::PluginGoogleAnalytics::logTiming(arg0, arg1, arg2, arg3);
         JS_SET_RVAL(cx, vp, JSVAL_VOID);
         return JS_TRUE;
     }
@@ -632,7 +741,8 @@ void js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(JSContext *cx, JS
     };
 
     static JSFunctionSpec st_funcs[] = {
-        JS_FN("logTiming", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("createTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setMetric", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("stopPeriodicalDispatch", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopPeriodicalDispatch, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setDryRun", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDryRun, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logEvent", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logEvent, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -641,12 +751,14 @@ void js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(JSContext *cx, JS
         JS_FN("logScreen", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logScreen, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("startSession", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_startSession, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logException", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logException, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setUser", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("stopSession", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setDimension", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logSocial", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logSocial, 3, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("enableAdvertisingTracking", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableAdvertisingTracking, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("dispatchHits", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_dispatchHits, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("enableTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("logTiming", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -701,7 +813,8 @@ void js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(JSContext *cx, JS
     };
 
     static JSFunctionSpec st_funcs[] = {
-        JS_FN("logTiming", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("createTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setMetric", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("stopPeriodicalDispatch", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopPeriodicalDispatch, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setDryRun", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDryRun, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logEvent", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logEvent, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -710,12 +823,14 @@ void js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(JSContext *cx, JS
         JS_FN("logScreen", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logScreen, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("startSession", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_startSession, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logException", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logException, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setUser", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("stopSession", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setDimension", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logSocial", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logSocial, 3, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("enableAdvertisingTracking", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableAdvertisingTracking, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("dispatchHits", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_dispatchHits, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("enableTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("logTiming", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -766,7 +881,8 @@ void js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(JSContext *cx, JS
     JSFunctionSpec *funcs = NULL;
 
     static JSFunctionSpec st_funcs[] = {
-        JS_FN("logTiming", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("createTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setMetric", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("stopPeriodicalDispatch", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopPeriodicalDispatch, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setDryRun", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDryRun, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logEvent", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logEvent, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -775,12 +891,14 @@ void js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(JSContext *cx, JS
         JS_FN("logScreen", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logScreen, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("startSession", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_startSession, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logException", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logException, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setUser", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("stopSession", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("setDimension", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("logSocial", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logSocial, 3, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("enableAdvertisingTracking", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableAdvertisingTracking, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("dispatchHits", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_dispatchHits, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("enableTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createTracker", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("logTiming", js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming, 4, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -820,6 +938,8 @@ void register_all_PluginGoogleAnalyticsJS(JSContext* cx, JS::HandleObject obj) {
     get_or_create_js_obj(cx, obj, "sdkbox", &ns);
 
     js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(cx, ns);
+
+    sdkbox::setProjectType("js");
 }
 #else
 void register_all_PluginGoogleAnalyticsJS(JSContext* cx, JSObject* obj) {
@@ -837,6 +957,8 @@ void register_all_PluginGoogleAnalyticsJS(JSContext* cx, JSObject* obj) {
     obj = ns;
 
     js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(cx, obj);
+
+    sdkbox::setProjectType("js");
 }
 #endif
 #elif defined(JS_VERSION)
@@ -855,5 +977,7 @@ void register_all_PluginGoogleAnalyticsJS(JSContext* cx, JSObject* obj) {
     obj = ns;
 
     js_register_PluginGoogleAnalyticsJS_PluginGoogleAnalytics(cx, obj);
+
+    sdkbox::setProjectType("js");
 }
 #endif

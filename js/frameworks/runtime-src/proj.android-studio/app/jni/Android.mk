@@ -9,6 +9,7 @@ LOCAL_MODULE_FILENAME := libcocos2djs
 LOCAL_SRC_FILES := hellojavascript/main.cpp ../../../Classes/AppDelegate.cpp ../../../Classes/PluginGoogleAnalyticsJS.cpp ../../../Classes/PluginGoogleAnalyticsJS.hpp ../../../Classes/SDKBoxJSHelper.cpp ../../../Classes/SDKBoxJSHelper.h
 
 LOCAL_LDLIBS := -landroid -llog
+LOCAL_CPPFLAGS := -DSDKBOX_ENABLED
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes
 LOCAL_WHOLE_STATIC_LIBRARIES := PluginGoogleAnalytics sdkbox
 
