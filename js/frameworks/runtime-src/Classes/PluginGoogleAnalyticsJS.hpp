@@ -19,9 +19,14 @@ void register_all_PluginGoogleAnalyticsJS(JSContext* cx, JSObject* obj);
 bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_finalize(JSContext *cx, JSObject *obj);
 #if defined(MOZJS_MAJOR_VERSION)
-bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp);
 #elif defined(JS_VERSION)
-JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp);
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp);
+#endif
+#if defined(MOZJS_MAJOR_VERSION)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric(JSContext *cx, uint32_t argc, jsval *vp);
+#elif defined(JS_VERSION)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setMetric(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 #if defined(MOZJS_MAJOR_VERSION)
 bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopPeriodicalDispatch(JSContext *cx, uint32_t argc, jsval *vp);
@@ -64,9 +69,19 @@ bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logException(JSContext *cx
 JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logException(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 #if defined(MOZJS_MAJOR_VERSION)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser(JSContext *cx, uint32_t argc, jsval *vp);
+#elif defined(JS_VERSION)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setUser(JSContext *cx, uint32_t argc, jsval *vp);
+#endif
+#if defined(MOZJS_MAJOR_VERSION)
 bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession(JSContext *cx, uint32_t argc, jsval *vp);
 #elif defined(JS_VERSION)
 JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_stopSession(JSContext *cx, uint32_t argc, jsval *vp);
+#endif
+#if defined(MOZJS_MAJOR_VERSION)
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension(JSContext *cx, uint32_t argc, jsval *vp);
+#elif defined(JS_VERSION)
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_setDimension(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 #if defined(MOZJS_MAJOR_VERSION)
 bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logSocial(JSContext *cx, uint32_t argc, jsval *vp);
@@ -89,9 +104,9 @@ bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableTracker(JSContext *c
 JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_enableTracker(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 #if defined(MOZJS_MAJOR_VERSION)
-bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp);
 #elif defined(JS_VERSION)
-JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_createTracker(JSContext *cx, uint32_t argc, jsval *vp);
+JSBool js_PluginGoogleAnalyticsJS_PluginGoogleAnalytics_logTiming(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 #endif
 
